@@ -1,0 +1,41 @@
+@charset "utf-8";
+/* CSS Document */
+
+.margin{width:1190px;margin:0 auto;}
+/*body{background: #eee;}*/
+
+#top{height: 25px;background: #f2f2f2;border-bottom: 1px solid #b6b4b6;}
+#top .top-l{float:left}
+#top .top-l img:nth-child(2){margin-left: 8px;margin-right: 8px;}
+#top .top-l img{margin-bottom: -8px;}
+#top .top-r{ float:right;font:100 12px/25px "";color: #666;}
+#top .top-r strong{cursor: pointer;color: #f00;margin: 0 5px;}
+#top .top-r i:hover{cursor: pointer;color: #e00;}
+#top .top-r b:hover{color: #e00;}
+#top .top-r span{margin: 0 5px;}
+
+
+.img1{display: block;margin: 20px 0;}
+.mmm{border:5px solid #ccc;}
+.main-l{float: left;}
+.main{float: left;margin-left: 80px;margin-top:50px;width: 450px;padding: 10px 30px;border-radius: 5px;}
+.main .mima{margin: 40px 0;}
+.main p{font:25px/50px ""; color: #f00;margin-left: 176px;margin-bottom: 20px;}
+.main span{float: left; font:14px/30px "";width: 56px;text-align: center;}
+.main input{float:left;width: 300px;height: 30px;border-radius: 5px;border: solid 1px #0069D9;}
+.main button{width: 100px;height: 30px;margin-left:150px;margin-top:30px ;background: #ff9;border: none;border-radius: 5px;}
+
+#di{text-align: center;font: 14px/40px "";margin-top: 50px;}
+#di img{height: 48px; cursor: pointer;}
+
+
+
+
+
+
+
+
+
+
+
+

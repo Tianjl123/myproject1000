@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/style4.css" />
+	</head>
+	<body>
+	<div id="top">
+	<div class="margin">
+		<div class="top-l">
+			<img src="images/wu.png" />
+			<img src="images/wei.png" class="c" />
+			<img src="images/weibo.png" />
+		</div>
+		
+		<div class="top-r">
+			<s>您好，欢迎来到天虹!</s>
+			<a href="l.html" target="_blank"><strong>[登录]</strong></a>
+			<a href="r.html" target="_blank"><i>[注册]</i></a>
+			<span>|</span>
+			<b>我的订单</b>
+			<span>|</span>
+			<b>我的天虹</b>
+			<span>|</span>
+			<em>客户服务</em>
+		</div>
+	</div>
+</div>
+<main>
+	<div class="margin">
+		<a href="index.html"><img src="images/logo.jpg" class="img1"/></a>
+		<div class="mmm clear">	
+		<div class="main-l clear">
+			<img src="images/denglu.jpg"/>		
+		</div>
+		<div class="main clear">
+			<p>登录</p>
+			<div class="yong clear">
+				<span>用户名：</span><input type="text" id="user" /><br />
+			</div>
+			<div class="mima clear">
+				<span>密码：</span><input type="text" id="pass" /><br />
+			</div>
+			<button id="btn">点击登录</button>
+			<span></span>
+		</div>	
+		</div>
+	</div>	
+</main>
+<div id="di" class="margin">
+	<p>粤ICP备11065574号-7  营业执照　　　Copyright© 虹领巾 2009-2018, All Rights
+        Reserved　　　天虹商场股份有限公司 版权所有
+    </p>
+    <img src="images/di.png" />
+</div>
+	</body>
+	<script src="js/cookie.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+			var btn = document.getElementById("btn")
+			var user = document.getElementById("user")
+			var pass = document.getElementById("pass")
+		var str = document.cookie;
+		arr = str.split("; ")
+		var arr1 =[]
+		var onoff = false;
+		btn.onclick = function(){
+		for(var i=0;i<arr.length;i++){
+				if(user.value == arr[i].split("=")[0] && pass.value == arr[i].split("=")[1]){
+					 onoff = true;
+				}
+		}
+		if(onoff){
+			alert("登陆成功")
+			onoff = false;
+			location.href = "index.html?"+user.value+""
+			}else{
+				alert("登陆失败")
+				}
+		}
+	</script>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>list</title>
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/style6.css" />
+		<style type="text/css">
+			*{margin: 0;padding: 0;}
+			a{text-decoration: none;color: #666;}
+			#cont{width: 1000px;overflow: hidden;margin: 10px auto;}
+			.box{width: 250px;border: solid 1px black;box-sizing: border-box;text-align: center;float: left;}
+			.box img{width: 100%;display: block;margin: 5px auto;}
+			.box span{display: block;color: red;}
+			.box p{height: 40px;overflow: hidden;font-size: 14px;line-height: 20px;}
+			.box em{display: block;width: 120px;line-height: 22px;color: #fff;background: #f34;margin: 5px auto;border-radius: 5px;}
+		</style>
+	</head>
+<body>
+	<div id="top">
+	<div class="margin">
+		<div class="top-l">
+			<img src="images/wu.png" />
+			<img src="images/wei.png" class="c" />
+			<img src="images/weibo.png" />
+		</div>
+		
+		<div class="top-r">
+			<s>您好，欢迎来到天虹!</s>
+			<a href="l.html" target="_blank"><strong>[登录]</strong></a>
+			<a href="r.html" target="_blank"><i>[注册]</i></a>
+			<span>|</span>
+			<b>我的订单</b>
+			<span>|</span>
+			<b>我的天虹</b>
+			<span>|</span>
+			<em>客户服务</em>
+		</div>
+	</div>
+</div>
+<header class="clear">
+	<div class="margin">
+		<div class="logo">
+		<a href="index.html"><img src="images/logo.jpg" /></a>
+		</div>
+		<div class="center">
+			<div class="sou clear">
+				<input type="text" placeholder="自营好货" />
+				<p>搜索</p>	
+			</div>
+			<div class="resou">
+				<span>热门搜索:</span>
+				<a href="#">Air Jordan</a>
+				<a href="#">自营海外好货</a>
+				<a href="#">尿裤大趴</a>
+				<a href="#">自营好货</a>
+				<a href="#">凉夏电器</a>
+				<a href="#">跑鞋89元起</a>
+				<a href="#">冬季抢购</a>
+			</div>
+		</div>
+		<a href="car.html"><div class="che">
+			<span>去购物车结算</span>
+			<i>0</i>
+		</div></a>
+		
+	</div>
+</header>
+<nav>
+	<div class="margin">
+		<!--<div class="all">
+			全部商品分类
+		</div>-->
+		<div class="nav">
+			<a href="index.html">首页</a>
+			<a>天虹官方APP</a>
+			<a>品牌街</a>
+			<a>海外购</a>
+			<img src="images/new.gif" class="new1"/>
+			<img src="images/new.gif" class="new2"/>
+		</div>		
+	</div>		
+</nav>
+		<div id="cont"></div>
+<div id="floor">
+	<ul class="floor">
+		    <li>美食</li><li>生活</li><li>电器</li><li>服饰</li><li>美肤</li><li>母婴</li>
+	</ul>
+</div>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/floor1.js"></script>
+	<script type="text/javascript">
+		
+		class Shop{
+			constructor(options){
+				this.url = options.url;
+				this.cont = options.cont;
+				
+				this.load();
+			}
+			load(){
+				var that = this;
+				$.ajax({
+					url:this.url,
+					success:function(res){
+						that.res = res;
+						that.display();
+						that.init();
+					}
+				})
+			}
+			display(){
+				var str = ""
+				for(var i=0;i<this.res.food1.length;i++){
+					str += `<div class="box" index="${this.res.food1[i].goodsId}">
+								<a href="detail.html?${this.res.food1[i].url}&${this.res.food1[i].price1}&${this.res.food1[i].name}&${this.res.food1[i].goodsId}">
+								<img src="${this.res.food1[i].url}">
+								<span>${this.res.food1[i].price1}</span>
+								<p>${this.res.food1[i].name}</p></a>
+								<em>加入购物车</em>
+							</div>`
+				}
+				this.cont.html(str);
+			}
+			init(){
+				var that = this
+				this.cont.on("click","em",function(){
+					that.id = $(this).parent().attr("index");
+					that.setcookie()
+				})
+			}
+			setcookie(){
+				if($.cookie("goods")){
+					this.goods = JSON.parse($.cookie("goods"))
+					var onoff = true;
+					for(var i=0;i<this.goods.length;i++){
+						if(this.id === this.goods[i].id){
+							this.goods[i].num++
+							onoff = false
+						}
+					}
+					if(onoff){
+						this.goods.push({
+							id:this.id,
+							num:1
+						})
+					}
+				}else{
+					this.goods = [{
+						id:this.id,
+						num:1
+					}]
+				}
+				$.cookie("goods",JSON.stringify(this.goods))
+			}
+		}
+		new Shop({
+			url:"http://localhost/tianhong/json/goods.json",
+			cont:$("#cont")
+		})
+	</script>
+</html>
