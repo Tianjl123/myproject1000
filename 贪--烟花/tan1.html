@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			span{position:absolute;border: 2px solid #000000;width: 100px;
+				 height: 80px;left:200px;right:200px; font: 40px/80px "";text-align: center;}
+		</style>
+	</head>
+	<body>
+		<span>0</span>
+	</body>
+</html>
+<script type="text/javascript">
+			function Map(){
+				this.w = 800;
+				this.h = 400;
+				this.display()
+			}
+			Map.prototype.display = function(){
+				this.ele = document.createElement("div")
+				this.ele.style.width = this.w+"px"
+				this.ele.style.height = this.h+"px"
+				this.ele.style.background = "#ccc"
+				this.ele.style.margin = "10px auto"
+				this.ele.style.position = "relative"
+				document.body.appendChild(this.ele)
+			}
+			function Food(){
+				this.w = 20;
+				this.h = 20;
+				this.display()
+			}
+			Food.prototype.display = function(){
+				if(!this.ele){
+					this.ele = document.createElement("div")
+					this.ele.style.width = this.w+"px"
+					this.ele.style.height = this.h+"px"
+					this.ele.style.background = "red"
+					this.ele.style.position = "absolute"
+					map.ele.appendChild(this.ele)				
+				}
+				this.x = random(0,map.w/this.w-1)
+				this.y = random(0,map.h/this.h-1)
+				this.ele.style.left = this.x*this.w+"px"
+				this.ele.style.top = this.y*this.h+"px"	
+			}
+			function Snake(){
+				this.w = 20;
+				this.h = 20;
+				this.qq = 0;
+				this.body = [[4,3,"green"],[3,3,"yellow"],[2,3,"yellow"]]
+				this.direct = "right"
+				this.display()	
+			}
+			Snake.prototype.display = function(){
+				for(var i=0;i<this.body.length;i++){
+					if(!this.body[i][3]){
+						this.body[i][3] = document.createElement("div")
+						this.body[i][3].style.width = this.w+"px"
+						this.body[i][3].style.height = this.h+"px"
+						this.body[i][3].style.position= "absolute"
+						map.ele.appendChild(this.body[i][3])
+					}
+					this.body[i][3].style.left = this.body[i][0]*this.w+"px"
+					this.body[i][3].style.top = this.body[i][1]*this.h+"px"
+					this.body[i][3].style.background = this.body[i][2] 	
+					
+				}
+				setTimeout(()=>{
+						this.move()
+					},100)
+			}
+			Snake.prototype.move = function(){
+				for(var i=this.body.length-1;i>0;i--){
+					this.body[i][0] = this.body[i-1][0]
+					this.body[i][1] = this.body[i-1][1]
+				}
+				switch(this.direct){
+					case "left":this.body[0][0] -= 1;break;
+					case "right":this.body[0][0] += 1;break;
+					case "top":this.body[0][1] -= 1;break;
+					case "bottom":this.body[0][1] += 1;break;
+				}
+				if(this.body[0][0]<0 || this.body[0][1]<0 || this.body[0][0]>map.w/this.w-1||this.body[0][1]>map.h/this.h-1){
+					alert("撞墙死")	
+					return;
+				}
+				if(this.body[0][0] ==food.x&&this.body[0][1] == food.y){
+					this.qq+=10;
+					var ospan = document.querySelector("span")
+					ospan.innerHTML = this.qq;
+					console.log(this.qq)
+					
+					var x = this.body[this.body.length-1][0]
+					var y = this.body[this.body.length-1][1]
+					
+					this.body.push([x,y,"blue"])
+					food.display()
+				}
+				for(var i=1;i<this.body.length;i++){
+					if(this.body[0][0] == this.body[i][0] && this.body[0][1] == this.body[i][1]){
+//					alert("吃到自己死")
+//					return;
+				}
+				}
+				this.display()
+			}
+			Snake.prototype.direction = function(value){	
+				switch(value){
+					case 37:this.direct = "left";break;
+					case 38:this.direct = "top";break;
+					case 39:this.direct = "right";break;
+					case 40:this.direct = "bottom";break;
+				}
+			}
+			function random(a,b){
+				return Math.round(Math.random()*(a-b)+b)
+			}
+			var map = new Map()
+			var food = new Food()
+			var snake = new Snake()
+			document.onkeydown = function(eve){
+				var e = eve || window.event
+				var keyC = e.keyCode || e.which
+				snake.direction(keyC)
+			}
+</script>

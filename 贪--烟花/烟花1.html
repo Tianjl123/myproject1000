@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>1</title>
+	</head>
+	<body>
+	</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+		<style>
+			#container{width: 80%;height: 600px;border: 2px solid red;background: #000;margin:20px auto;
+				cursor: pointer;position: relative;left: 0;top: 0;overflow: hidden;}
+			.fire{width: 10px;height:10px;position: absolute;bottom: 0;}
+			.small-fire{width: 10px;height:10px;position: absolute;border-radius: 50%;
+			}
+		</style>
+</head>
+<body>
+	<div id="container"></div>
+</body>
+</html>
+<script src="move.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+//			OOA:
+//				1.点击
+//				2.创建元素,设置初始位置
+//				3.确定目标位置,开始移动
+//				4.删除,并且创建许多小元素,设置初始位置
+//				5.计算随机目标,让小元素运动到随机位置
+//				6.删除
+//			OOD:
+//			function Fire(){
+//				存属性,创建元素
+//				this.createFire()
+//			}
+//			Fire.prototype.createFire = function(){
+//				创建元素,设置初始位置
+//				运动
+//				this.move()
+//			}
+//			Fire.prototype.move=function(){
+//				运动到目标位置,
+//				删除,创建小元素
+//				this.createSmall()
+//			}
+//			Fire.prototype.createSmall = function(){
+//				创建小元素,初始位置
+//				开始运动,到目标位置,删除
+//				this.move()
+//			}
+//			var ocont = document.getElementById("container")
+//			ocont.onclick = function(){
+//				new Fire()
+//			}
+			function Fire(main,offset){
+//				存属性,创建元素
+				this.main = main;
+				this.x=offset.x;
+				this.y=offset.y;
+				this.createFire()
+			}
+			Fire.prototype.createFire = function(){
+//				创建元素,设置初始位置
+//				运动
+				this.ele = document.createElement("div")
+				this.ele.className = "fire"
+				this.main.appendChild(this.ele)
+				this.ele.style.left = this.x+"px"
+//				this.ele.style.top = this.y+"px"
+				this.ele.style.background = this.randomColor()
+				this.move()
+			}
+			Fire.prototype.move=function(){
+//				运动到目标位置,
+//				删除,创建小元素
+				var that = this;
+				move(this.ele,{top:this.y},function(){
+console.log(1)
+					
+					that.ele.remove()
+					that.createSmall()
+				})
+//				this.createSmall()
+			}
+			Fire.prototype.createSmall = function(){
+//				创建小元素,初始位置
+//				开始运动,到目标位置,删除
+				var num = this.random(10,20)
+				var r = this.random(100,300)
+				for(var i=0;i<num;i++){
+					let div = document.createElement("div")
+					div.className = "small-fire"
+					this.main.appendChild(div)
+					div.style.left = this.x+"px"
+					div.style.top = this.y+"px"
+					div.style.background = this.randomColor()
+					var target = {
+							left:Math.round(Math.cos(Math.PI/180 * (360/num*i)) * r + this.x),
+							top:Math.round(Math.sin(Math.PI/180 * (360/num*i)) * r + this.y)
+				}
+				move(div,{left:target.left,top:target.top},function(){
+					div.remove()
+				})
+				}
+			}
+			Fire.prototype.randomColor=function(){
+				return "rgb("+this.random(0,255)+","+this.random(0,255)+","+this.random(0,255)+")"
+			}
+			Fire.prototype.random =  function(a,b){
+				return Math.round(Math.random()*(a-b)+b)
+			}
+			var ocont = document.getElementById("container")
+			ocont.onclick = function(eve){
+				var e = eve||window.event
+				new Fire(ocont,{
+					x:e.offsetX,
+					y:e.offsetY
+				})
+			}
+</script>
